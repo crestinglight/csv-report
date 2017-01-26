@@ -1,0 +1,6 @@
+Account,Date,Payee,Category,Outflow,Inflow
+Jeffrey,1/1/2017,STARTING BALANCE,Allowance,$0.00,"$5,000.00"
+Bob,1/1/2017,STARTING BALANCE,Allowance,$0.00,"$3,800.00"
+Jeffrey,1/9/2017,ACME AUTO REPAIR,Car Repairs,$4.91,$0.00
+Bob,1/9/2017,Disney Store,Groceries,$397.76,$0.00
+Bob,1/9/2017,blah mart,Groceries,$27.04,$0.00
