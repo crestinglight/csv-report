@@ -4,7 +4,6 @@ require 'pry'
 args = ARGV
 csvFile="accounts.csv"
 
-accountCategories = getCategories(csvFile)
 totalSpent = 0
 startingBalance = getStartingBalance(accountName,csvFile)
 balanceRemaining = 0
@@ -71,23 +70,23 @@ def convertToFloat(transaction)
     transaction.gsub(/[$]/,'').gsub(/[,]/,'').to_f
 end
 
-def processTransactions(categoryTransactions, categoryBalance, categoryTransactionCount, categoryCountList, categoryBalanceList)
+def processTransactions(categoryTransactions, categoryBalance, categoryTransactionCount,  categoryBalanceList)
     for transaction in categoryTransactions
         #Loops for each transaction for Priya and Sonia. Stripping the "$" and "," then converting to integer.
         transactionOutflow = convertToFloat(transaction[4])
         transactionInflow = convertToFloat(transaction[5])
 
-        transactionCountUpdate(categoryTransactionCount, categoryCountList)
-        balanceUpdate(transactionInflow, transactionOutflow, categoryBalance, categoryBalanceList)
+        transactionCountUpdate(categoryTransactionCount)
+        balanceUpdate(transactionInflow, transactionOutflow, categoryBalance)
     end
 end
 
-def transactionCountUpdate(categoryTransactionCount, categoryCountList)
+def transactionCountUpdate(categoryTransactionCount)
     categoryTransactionCount = categoryTransactionCount + 1
     categoryCountList.push(categoryTransactionCount)
 end
 
-def balanceUpdate(transactionInflow, transactionOutflow, categoryBalance, categoryBalanceList)
+def balanceUpdate(transactionInflow, transactionOutflow, categoryBalance)
     categoryBalance = categoryBalance  - transactionOutflow + transactionInflow
     categoryBalanceList.push(categoryBalance.round(2))
 end
@@ -113,7 +112,7 @@ def consoleHeader(accountName, balanceRemaining)
     print ("-" * 29) + " | " + ("-" * 15) + " | " + ("-" * 30) + "\n"
 end
 
-def consoleBody(categoryList, categoryCountList, categoryBalanceList, categoryAvgList)
+def consoleBody
     for i in 0..categoryList.length-1
         if categoryCountList[i] > 0 then
             print categoryList[i] + (" " * (30 - categoryList[i].length)) + "|  " + categoryBalanceList[i].round(2).to_s + (" " * (15 - categoryBalanceList[i].to_s.length)) + "|  " + categoryAvgList[i].round(2).to_s + "\n" 
@@ -123,7 +122,7 @@ def consoleBody(categoryList, categoryCountList, categoryBalanceList, categoryAv
 end
 
 
-def consoleOutput(accountName, balanceRemaining, categoryList, categoryCountList, categoryBalanceList, categoryAvgList)
+def consoleOutput(accountName, balanceRemaining)
     consoleHeader(accountName, balanceRemaining)
     consoleBody(categoryList, categoryCountList, categoryBalanceList, categoryAvgList)
 end
@@ -131,10 +130,7 @@ end
 
 for accountName in accountsArray 
     #For loop that will loop twice, once for each account name, in this case "Priya" and "Sonia".
-    
-    
-
-    
+    accountCategories = getCategories(csvFile)
 
     for category in accountCategories
         categoryTransactions = listTransactions(accountName, category, csvFile)
@@ -142,7 +138,7 @@ for accountName in accountsArray
    ###################################
         
         #Calling the for loop that processes each transaction for a category.
-        processTransactions(categoryTransactions, categoryBalance, categoryTransactionCount, categoryCountList, categoryBalanceList)
+        processTransactions(categoryTransactions, categoryBalance, categoryTransactionCount,  categoryBalanceList)
         binding.pry
 
         if categoryTransactionCount > 0 
