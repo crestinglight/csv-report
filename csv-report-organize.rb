@@ -45,20 +45,40 @@ def findUniqueCategoryNames
 	return categoryUniqueRetrieved.uniq
 end
 
-$accountUniqueNamesList = userInput
+def startProcessing
+	accountsRetrieved = userInput
+	#binding.pry
+	processEachAccountInAccountsList(accountsRetrieved)
+end
+
+startProcessing
+#$accountUniqueNamesList = accountsRetrieved
+
 $categoryUniqueNamesList = findUniqueCategoryNames
 
-def processEachCategoryForThisAccount(accName, category)
+def processThisAccount(accountName)
+	
+	for x in 0..$categoryUniqueNamesList.length-1
+		processThisCategoryForThisAccount(accountName, $categoryUniqueNamesList[i])
+		$balanceRemaining = 0
+
+		for i in 0..$categoryBalanceList.length-1
+			$balanceRemaining = $balanceRemaining + $categoryBalanceAmount
+		end
+	end
+	outputWhichFormat
+end
+
+def processThisCategoryForThisAccount(accName, category)
 	$categoryTransactionCount = 0
 	$categoryBalanceAmount = 0
-	processTransactionsForThisCategory(accName, category)
+	processEachTransactionForThisCategory(accName, category)
 	$categoryBalanceList.push($categoryBalanceAmount.round(2))
 	$categoryCountList.push($categoryTransactionCount)
 	updateCategoryAvgList
-	binding.pry
 end
 
-def processTransactionsForThisCategory(accName, category)
+def processEachTransactionForThisCategory(accName, category)
 	listOfTransactionsForThisCategory = getTransactionsArray(accName, category)
 	
 	for i in 0..listOfTransactionsForThisCategory.length-1
@@ -94,22 +114,47 @@ end
 def updateCategoryAvgList
 	categoryAvg = 0
 	if $categoryTransactionCount > 0
-		categoryAvg = $categoryBalance / $categoryTransactionCount
+		categoryAvg = $categoryBalanceAmount / $categoryTransactionCount
+		categoryAvg = categoryAvg.round(2)
 	else
 		categoryAvg = 0
 	end
 	$categoryAvgList.push(categoryAvg)
 end
 
-processEachCategoryForThisAccount("Sonia", "Entertainment")
+processThisCategoryForThisAccount("Sonia", "Entertainment")
+
+def outputWhichFormat
+	consoleHeader()
+	consoleBody
+end
+
+def consoleHeader(accountName, balanceRemaining)
+    print ("=" * 80) + "\n"
+    print "Account: " + accountName + "... Balance: $" + balanceRemaining.round(2).to_s + "\n"
+    print ("=" * 80) + "\n"
+    print "Category" + (" " * 22) + "|  " + "Total Spent" + (" " * 4) + "|  " + "Average Transaction" + "\n"
+    print ("-" * 29) + " | " + ("-" * 15) + " | " + ("-" * 30) + "\n"
+end
+
+def consoleBody
+    for i in 0..categoryList.length-1
+        if categoryCountList[i] > 0 then
+            print categoryList[i] + (" " * (30 - categoryList[i].length)) + "|  " + categoryBalanceList[i].round(2).to_s + (" " * (15 - categoryBalanceList[i].to_s.length)) + "|  " + categoryAvgList[i].round(2).to_s + "\n" 
+        end 
+    end
+    print "\n" + "\n"
+end
+
+
+def consoleOutput(accountName, balanceRemaining)
+    consoleHeader(accountName, balanceRemaining)
+    consoleBody(categoryList, categoryCountList, categoryBalanceList, categoryAvgList)
+end
 
 # def updateBalance
 # 	update total balance for this account, in this category
 # 	totalBalance
-# end
-
-# def categoryCount
-# 	Update number of transactions for this account, in this category
 # end
 
 # def totalBalanceForCategory
@@ -122,10 +167,6 @@ processEachCategoryForThisAccount("Sonia", "Entertainment")
 # 	else
 # 		add category to total for that account
 # 	end
-# end
-
-# def averageAmountForCategory
-# 	find average for the category, per account
 # end
 
 # def totalBalance
