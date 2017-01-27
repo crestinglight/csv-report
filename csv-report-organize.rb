@@ -54,6 +54,7 @@ def processEachCategoryForThisAccount(accName, category)
 	processTransactionsForThisCategory(accName, category)
 	$categoryBalanceList.push($categoryBalanceAmount.round(2))
 	$categoryCountList.push($categoryTransactionCount)
+	updateCategoryAvgList
 	binding.pry
 end
 
@@ -88,6 +89,16 @@ end
 
 def ifRelevantTransaction(wantName, actualName, wantCategory, actualCategory)
 	return actualName == wantName && actualCategory == wantCategory
+end
+
+def updateCategoryAvgList
+	categoryAvg = 0
+	if $categoryTransactionCount > 0
+		categoryAvg = $categoryBalance / $categoryTransactionCount
+	else
+		categoryAvg = 0
+	end
+	$categoryAvgList.push(categoryAvg)
 end
 
 processEachCategoryForThisAccount("Sonia", "Entertainment")
