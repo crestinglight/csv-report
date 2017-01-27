@@ -56,16 +56,23 @@ startProcessing
 
 $categoryUniqueNamesList = findUniqueCategoryNames
 
-def processThisAccount(accountName)
+def processEachAccountInAccountsList(accountsRetrieved)
+	for i in 0..accountsRetrieved.length-1
+		processThisAccount(accountsRetrieved[i])
+	end
+end
+
+def processThisAccount(accName)
+	$balanceRemaining = 0
 	
 	for x in 0..$categoryUniqueNamesList.length-1
-		processThisCategoryForThisAccount(accountName, $categoryUniqueNamesList[i])
-		$balanceRemaining = 0
-
-		for i in 0..$categoryBalanceList.length-1
-			$balanceRemaining = $balanceRemaining + $categoryBalanceAmount
-		end
+		processThisCategoryForThisAccount(accName, $categoryUniqueNamesList[i])
+	end	
+		
+	for i in 0..$categoryBalanceList.length-1
+		$balanceRemaining = $balanceRemaining + $categoryBalanceAmount
 	end
+	binding.pry
 	outputWhichFormat
 end
 
