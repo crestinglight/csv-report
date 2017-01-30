@@ -1,4 +1,5 @@
 require "csv"
+require_relative "classes.rb"
 
 class Account
   def set_up_initial_values
@@ -42,6 +43,7 @@ class Category
   def add_transaction(amount)
     @tally += amount
     @num_transactions += 1
+    #Find category average
     @average_transaction_cost = @tally / @num_transactions
   end
 
@@ -64,15 +66,21 @@ class Money
   end
 end
 
-# class Inflow
-#   def set_value(number_string_from_csv)
-#     @value = number_string_from_csv.gsub(/[$]/, '').gsub(/[,]/, '').to_f.round(2)
-#   end
 
-#   def to_f
-#     return @value
-#   end
-# end
+
+#Setup
+x = Account.new
+x.set_up_initial_values
+
+#Exercise
+actual = x.update_tally(6.72)
+
+#Verify
+if actual == 6.72
+	puts "Pass"
+else
+	puts "Fail. Expected 6.72, instead got #{actual}."
+end
 
 accounts = {}
 
@@ -110,7 +118,7 @@ CSV.foreach("accounts.csv", {headers: true, return_headers: false}) do |row|
   current_account.category(category).add_transaction(transaction_amount)
 end
 
-#  Display
+# Output
 
 accounts.each do |name, info|
   puts "\n"

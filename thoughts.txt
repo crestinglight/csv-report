@@ -1,0 +1,11 @@
+What do we want to test?
+
+Convert String to Float. CHECK
+
+Sums being calculated correctly?
+Averages being calculated correctly?
+List of unique categories being built correctly?
+
+Find average of input numbers.
+Convert Float to String.
+Adding the proper number of transactions per category?
